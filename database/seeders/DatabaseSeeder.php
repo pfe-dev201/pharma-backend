@@ -15,7 +15,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             roleSeeder::class,
             userSeeder::class,
-            configurationSeeder::class
+            configurationSeeder::class,
+            imageProfileSeeder::class
         ]);
     }
 }
