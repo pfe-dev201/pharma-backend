@@ -71,6 +71,7 @@ class EntreeMedicamentController extends Controller
      */
     public function destroy(Entree $entree)
     {
-        //
+        $entree->delete();
+        return response()->json(["status" => "success", "message" => "le medicament a bien été supprimé", "medicaments" => Entree::all()]);
     }
 }
