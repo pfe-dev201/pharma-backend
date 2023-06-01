@@ -137,11 +137,21 @@ class EntreeMedicamentController extends Controller
     // trie
     public function setTrie(Request $request)
     {
+        $messages = [
+            "array" => ":attribute doit être sous forme d'un tableau.",
+            "in" => "la valeur du champ :attribute n'st pas valide."
+        ];
+
+        $attributs = [
+            "trierPar" => '"trier par"',
+            "typeTrie" => '"type de trie"',
+        ];
+
         $validator = Validator::make($request->all(), [
             "medicaments" => ["array"],
             "trierPar" => Rule::in(["DATE", "PEREMPTION", "CATEGORIE", "DESIGNATION", "CONDITIONNEMENT", "QUANTITE"]),
             "typeTrie" => Rule::in(["ASC", "DESC"])
-        ]);
+        ], $messages, $attributs);
 
         if ($validator->fails()) {
             return response()->json(["status" => "error", "error" => $validator->errors()]);
@@ -161,6 +171,27 @@ class EntreeMedicamentController extends Controller
     //filtre
     public function setFiltre(Request $request)
     {
+        $messages = [
+            "array" => ":attribute doit être sous forme d'un tableau.",
+            "in" => "la valeur du champ :attribute n'st pas valide.",
+            "date" => "le champ :attribute doit être une date valide.",
+            "string" => "le champ :attribute doit être une chaine de caractères.",
+            "integer" => "le champ :attribute un nombre entier."
+        ];
+
+        $attributs = [
+            "filtrerPar" => '"filtrer par"',
+            "typeFiltre" => '"type de filtre"',
+            "dateSuperieurA" => '"date supérieur à"',
+            "dateInferieurA" => '"date inférieur à"',
+            "dateEgaleA" => '"date égale à"',
+            "egaleA" => '"égale à"',
+            "commencePar" => '"commence par"',
+            "terminePar" => '"termine par"',
+            "inferieurA" => '"inférieur à"',
+            "superieurA" => '"supérieur à"',
+        ];
+
         $validator = Validator::make($request->all(), [
             "medicaments" => ["array"],
             "filtrerPar" => Rule::in(["DATE", "PEREMPTION", "CATEGORIE", "DESIGNATION", "CONDITIONNEMENT", "QUANTITE"]),
@@ -180,7 +211,7 @@ class EntreeMedicamentController extends Controller
             "terminePar" => ["nullable", "string"],
             "inferieurA" => ["nullable", "integer"],
             "superieurA" => ["nullable", "integer"]
-        ]);
+        ], $messages, $attributs);
 
         if ($validator->fails()) {
             return response()->json(["status" => "error", "error" => $validator->errors()]);
