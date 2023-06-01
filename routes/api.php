@@ -24,3 +24,8 @@ Route::apiResources([
     "entrees" => EntreeMedicamentController::class,
     "users" => UserController::class,
 ]);
+
+Route::prefix("entrees")->group(function() {
+    Route::post("/trie", [EntreeMedicamentController::class, "setTrie"]);
+    Route::post("/filtre", [EntreeMedicamentController::class, "setFiltre"]);
+});
