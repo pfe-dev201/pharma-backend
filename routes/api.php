@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EntreeMedicamentController;
+use App\Http\Controllers\SortieMedicamentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,10 +26,16 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::apiResources([
     "entrees" => EntreeMedicamentController::class,
+    "sorties" => SortieMedicamentController::class,
     "users" => UserController::class,
 ]);
 
 Route::prefix("entrees")->group(function() {
     Route::post("/trie", [EntreeMedicamentController::class, "setTrie"]);
     Route::post("/filtre", [EntreeMedicamentController::class, "setFiltre"]);
+});
+
+Route::prefix("sorties")->group(function() {
+    Route::post("/trie", [SortieMedicamentController::class, "setTrie"]);
+    Route::post("/filtre", [SortieMedicamentController::class, "setFiltre"]);
 });

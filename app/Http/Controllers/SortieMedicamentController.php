@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Entree;
+use App\Models\Sortie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-class EntreeMedicamentController extends Controller
+class SortieMedicamentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $entrees = Entree::all();
-        return response()->json($entrees);
+        $sorties = Sortie::all();
+        return response()->json($sorties);
     }
 
     /**
@@ -34,7 +34,6 @@ class EntreeMedicamentController extends Controller
         ];
 
         $attributs = [
-            "peremption" => "péremption",
             "categorie" => "catégorie",
             "designation" => "désignation",
             "quantite" => "quantité"
@@ -42,10 +41,8 @@ class EntreeMedicamentController extends Controller
 
         $validator = Validator::make($request->all(),[
             "date" => ["required", "date"],
-            "peremption" => ["required", "date"],
             "categorie" => ["required", "string"],
             "designation" => ["required", "string"],
-            "conditionnement" => ["required", "string"],
             "quantite" => ["required", "integer", "min:1"]
         ], $messages, $attributs);
 
@@ -53,25 +50,24 @@ class EntreeMedicamentController extends Controller
             return response()->json(["status" => "error", "error" => $validator->errors()]);
         }
 
-        $entree = new Entree();
+        $sorty = new Sortie();
 
-        $entree->user_id = 1;
-        $entree->date = $request->date;
-        $entree->peremption = $request->peremption;
-        $entree->categorie = $request->categorie;
-        $entree->designation = $request->designation;
-        $entree->conditionnement = $request->conditionnement;
-        $entree->quantite = $request->quantite;
+        $sorty->user_id = 1;
+        $sorty->date = $request->date;
+        $sorty->categorie = $request->categorie;
+        $sorty->designation = $request->designation;
+        $sorty->quantite = $request->quantite;
 
-        $entree->save();
+        $sorty->save();
 
-        return response()->json(["status" => "success", "message" => "le médicament a bien été ajouté", "medicaments" => Entree::all()]);
+        return response()->json(["status" => "success", "message" => "le médicament a bien été ajouté", "medicaments" => Sortie::all()]);
+    
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Entree $entree)
+    public function show(Sortie $sorty)
     {
         //
     }
@@ -79,7 +75,7 @@ class EntreeMedicamentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Entree $entree)
+    public function update(Request $request, Sortie $sorty)
     {
         $messages = [
             "required" => "le champ :attribute est obligatoire.",
@@ -92,7 +88,6 @@ class EntreeMedicamentController extends Controller
         ];
 
         $attributs = [
-            "peremption" => "péremption",
             "categorie" => "catégorie",
             "designation" => "désignation",
             "quantite" => "quantité"
@@ -100,10 +95,8 @@ class EntreeMedicamentController extends Controller
 
         $validator = Validator::make($request->all(),[
             "date" => ["required", "date"],
-            "peremption" => ["required", "date"],
             "categorie" => ["required", "string"],
             "designation" => ["required", "string"],
-            "conditionnement" => ["required", "string"],
             "quantite" => ["required", "integer", "min:1"]
         ], $messages, $attributs);
 
@@ -111,26 +104,25 @@ class EntreeMedicamentController extends Controller
             return response()->json(["status" => "error", "error" => $validator->errors()]);
         }
 
-        $entree->user_id = 1;
-        $entree->date = $request->date;
-        $entree->peremption = $request->peremption;
-        $entree->categorie = $request->categorie;
-        $entree->designation = $request->designation;
-        $entree->conditionnement = $request->conditionnement;
-        $entree->quantite = $request->quantite;
+        $sorty->user_id = 1;
+        $sorty->date = $request->date;
+        $sorty->categorie = $request->categorie;
+        $sorty->designation = $request->designation;
+        $sorty->quantite = $request->quantite;
 
-        $entree->save();
+        $sorty->save();
 
-        return response()->json(["status" => "success", "message" => "le médicament a bien été modifié", "medicaments" => Entree::all()]);
+        return response()->json(["status" => "success", "message" => "le médicament a bien été modifié", "medicaments" => Sortie::all()]);
+    
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Entree $entree)
+    public function destroy(Sortie $sorty)
     {
-        $entree->delete();
-        return response()->json(["status" => "success", "message" => "le medicament a bien été supprimé", "medicaments" => Entree::all()]);
+        $sorty->delete();
+        return response()->json(["status" => "success", "message" => "le medicament a bien été supprimé", "medicaments" => Sortie::all()]);
     }
 
     // trie
@@ -148,7 +140,7 @@ class EntreeMedicamentController extends Controller
 
         $validator = Validator::make($request->all(), [
             "medicaments" => ["array"],
-            "trierPar" => Rule::in(["DATE", "PEREMPTION", "CATEGORIE", "DESIGNATION", "CONDITIONNEMENT", "QUANTITE"]),
+            "trierPar" => Rule::in(["DATE", "CATEGORIE", "DESIGNATION", "QUANTITE"]),
             "typeTrie" => Rule::in(["ASC", "DESC"])
         ], $messages, $attributs);
 
@@ -159,7 +151,7 @@ class EntreeMedicamentController extends Controller
         if ($request->has("medicaments")) {
             $collection = collect($request->medicaments);
         } else {
-            $collection = Entree::all();
+            $collection = Sortie::all();
         }
 
         $medicaments = $collection->sortBy(strtolower($request->trierPar))->values()->all();
@@ -193,7 +185,7 @@ class EntreeMedicamentController extends Controller
 
         $validator = Validator::make($request->all(), [
             "medicaments" => ["array"],
-            "filtrerPar" => Rule::in(["DATE", "PEREMPTION", "CATEGORIE", "DESIGNATION", "CONDITIONNEMENT", "QUANTITE"]),
+            "filtrerPar" => Rule::in(["DATE", "CATEGORIE", "DESIGNATION", "QUANTITE"]),
             "typeFiltre" => Rule::in(["DATE EGALE A", "DATE INFERIEUR A", "DATE SUPERIEUR A", "EGALE A", "COMMENCE PAR", "TERMINE PAR", "INFERIEUR A", "SUPERIEUR A"]),
             "dateSuperieurA" => ["nullable", "date"],
             "dateInferieurA" => ["nullable", "date"],
@@ -219,29 +211,17 @@ class EntreeMedicamentController extends Controller
         if ($request->has("medicaments")) {
             $collection = collect($request->medicaments);
         } else {
-            $collection = Entree::all();
+            $collection = Sortie::all();
         }
 
         if ($request->typeFiltre === "DATE EGALE A") {
-            if ($request->filtrerPar === "DATE") {
-                $medicaments = $collection->where("date", $request->dateEgaleA)->all();
-            } else if ($request->filtrerPar === "PEREMPTION") {
-                $medicaments = $collection->where("peremption", $request->dateEgaleA)->all();
-            }
-
+            $medicaments = $collection->where("date", $request->dateEgaleA)->all();
+        
         } else if ($request->typeFiltre === "DATE INFERIEUR A") {
-            if ($request->filtrerPar === "DATE") {
-                $medicaments = $collection->where("date", "<", $request->dateInferieurA)->all();
-            } else if ($request->filtrerPar === "PEREMPTION") {
-                $medicaments = $collection->where("peremption", "<", $request->dateInferieurA)->all();
-            }
+            $medicaments = $collection->where("date", "<", $request->dateInferieurA)->all(); 
 
         } else if ($request->typeFiltre === "DATE SUPERIEUR A") {
-            if ($request->filtrerPar === "DATE") {
-                $medicaments = $collection->where("date", ">", $request->dateSuperieurA)->all();
-            } else if ($request->filtrerPar === "PEREMPTION") {
-                $medicaments = $collection->where("peremption", ">", $request->dateSuperieurA)->all();
-            }
+            $medicaments = $collection->where("date", ">", $request->dateSuperieurA)->all();
 
         } else if ($request->typeFiltre === "EGALE A") {
             $medicaments = $collection->where(strtolower($request->filtrerPar), $request->egaleA)->all();
