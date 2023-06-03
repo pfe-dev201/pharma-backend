@@ -63,4 +63,15 @@ class User extends Authenticatable
     {
         return $this->hasOne(Configuration::class)->withDefault();
     }
+
+    //methodes
+    public function getRole() {
+        if ($this->role->id === 1) {
+            return "ECRIRE-LIRE";
+        } else if ($this->role->id === 2) {
+            return "ECRIRE";
+        } else if ($this->role->id === 3) {
+            return "LIRE";
+        }
+    }
 }

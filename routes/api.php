@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ConfigurationPeriodeController;
 use App\Http\Controllers\EntreeMedicamentController;
 use App\Http\Controllers\SortieMedicamentController;
 use App\Http\Controllers\UserController;
@@ -24,11 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::apiResources([
-    "entrees" => EntreeMedicamentController::class,
-    "sorties" => SortieMedicamentController::class,
-    "users" => UserController::class,
-]);
+Route::apiSingleton("configuration", ConfigurationPeriodeController::class);
 
 Route::prefix("entrees")->group(function() {
     Route::post("/trie", [EntreeMedicamentController::class, "setTrie"]);
@@ -39,3 +36,14 @@ Route::prefix("sorties")->group(function() {
     Route::post("/trie", [SortieMedicamentController::class, "setTrie"]);
     Route::post("/filtre", [SortieMedicamentController::class, "setFiltre"]);
 });
+
+Route::prefix("users")->group(function() {
+    Route::post("/trie", [UserController::class, "setTrie"]);
+    Route::post("/filtre", [UserController::class, "setFiltre"]);
+});
+
+Route::apiResources([
+    "entrees" => EntreeMedicamentController::class,
+    "sorties" => SortieMedicamentController::class,
+    "users" => UserController::class,
+]);
