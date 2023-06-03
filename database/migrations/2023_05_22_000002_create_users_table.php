@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('prenom');
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum("status", ["admin", "user"]);
+            $table->enum("status", ["SUPER", "ADMIN", "UTILISATEUR"]);
             $table->foreignId('role_id')->constrained();
             $table->timestamps();
         });

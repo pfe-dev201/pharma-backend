@@ -15,17 +15,17 @@ class roleSeeder extends Seeder
     {
         DB::table('roles')->insert([
             [
-                'type' => 'read-write',
+                'type' => 'ECRIRE-LIRE',
                 'description' => "insértion des médicaments - consultation de l'état et des rapports - configuration de l'application",
                 "created_at" => "2023-05-22"
             ],
             [
-                'type' => 'write',
+                'type' => 'ECRIRE',
                 'description' => "insértion des médicaments - consultation de l'état et des rapports",
                 "created_at" => "2023-05-22"
             ],
             [
-                'type' => 'read',
+                'type' => 'LIRE',
                 'description' => "consultation de l'état et des rapports",
                 "created_at" => "2023-05-22"
             ],

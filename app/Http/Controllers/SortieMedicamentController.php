@@ -40,6 +40,7 @@ class SortieMedicamentController extends Controller
         ];
 
         $validator = Validator::make($request->all(),[
+            "user_id" => ["required", "integer"],
             "date" => ["required", "date"],
             "categorie" => ["required", "string"],
             "designation" => ["required", "string"],
@@ -52,7 +53,7 @@ class SortieMedicamentController extends Controller
 
         $sorty = new Sortie();
 
-        $sorty->user_id = 1;
+        $sorty->user_id = $request->user_id;
         $sorty->date = $request->date;
         $sorty->categorie = $request->categorie;
         $sorty->designation = $request->designation;
@@ -94,6 +95,7 @@ class SortieMedicamentController extends Controller
         ];
 
         $validator = Validator::make($request->all(),[
+            "user_id" => ["required", "integer"],
             "date" => ["required", "date"],
             "categorie" => ["required", "string"],
             "designation" => ["required", "string"],
@@ -104,7 +106,7 @@ class SortieMedicamentController extends Controller
             return response()->json(["status" => "error", "error" => $validator->errors()]);
         }
 
-        $sorty->user_id = 1;
+        $sorty->user_id = $request->user_id;
         $sorty->date = $request->date;
         $sorty->categorie = $request->categorie;
         $sorty->designation = $request->designation;
@@ -130,7 +132,7 @@ class SortieMedicamentController extends Controller
     {
         $messages = [
             "array" => ":attribute doit être sous forme d'un tableau.",
-            "in" => "la valeur du champ :attribute n'st pas valide."
+            "in" => "la valeur du champ :attribute n'est pas valide."
         ];
 
         $attributs = [

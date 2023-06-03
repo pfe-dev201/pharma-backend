@@ -41,6 +41,7 @@ class EntreeMedicamentController extends Controller
         ];
 
         $validator = Validator::make($request->all(),[
+            "user_id" => ["required", "integer"],
             "date" => ["required", "date"],
             "peremption" => ["required", "date"],
             "categorie" => ["required", "string"],
@@ -55,7 +56,7 @@ class EntreeMedicamentController extends Controller
 
         $entree = new Entree();
 
-        $entree->user_id = 1;
+        $entree->user_id = $request->user_id;
         $entree->date = $request->date;
         $entree->peremption = $request->peremption;
         $entree->categorie = $request->categorie;
@@ -99,6 +100,7 @@ class EntreeMedicamentController extends Controller
         ];
 
         $validator = Validator::make($request->all(),[
+            "user_id" => ["required", "integer"],
             "date" => ["required", "date"],
             "peremption" => ["required", "date"],
             "categorie" => ["required", "string"],
@@ -111,7 +113,7 @@ class EntreeMedicamentController extends Controller
             return response()->json(["status" => "error", "error" => $validator->errors()]);
         }
 
-        $entree->user_id = 1;
+        $entree->user_id = $request->user_id;
         $entree->date = $request->date;
         $entree->peremption = $request->peremption;
         $entree->categorie = $request->categorie;

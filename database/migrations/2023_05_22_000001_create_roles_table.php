@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['write', 'read', 'read-write']);
+            $table->enum('type', ['ECRIRE', 'LIRE', 'ECRIRE-LIRE']);
             $table->string("description");
             $table->timestamps();
         });
