@@ -46,7 +46,6 @@ class EntreeMedicamentController extends Controller
             "peremption" => ["required", "date"],
             "categorie" => ["required", "string"],
             "designation" => ["required", "string"],
-            "conditionnement" => ["required", "string"],
             "quantite" => ["required", "integer", "min:1"]
         ], $messages, $attributs);
 
@@ -61,7 +60,6 @@ class EntreeMedicamentController extends Controller
         $entree->peremption = $request->peremption;
         $entree->categorie = $request->categorie;
         $entree->designation = $request->designation;
-        $entree->conditionnement = $request->conditionnement;
         $entree->quantite = $request->quantite;
 
         $entree->save();
@@ -105,7 +103,6 @@ class EntreeMedicamentController extends Controller
             "peremption" => ["required", "date"],
             "categorie" => ["required", "string"],
             "designation" => ["required", "string"],
-            "conditionnement" => ["required", "string"],
             "quantite" => ["required", "integer", "min:1"]
         ], $messages, $attributs);
 
@@ -118,7 +115,6 @@ class EntreeMedicamentController extends Controller
         $entree->peremption = $request->peremption;
         $entree->categorie = $request->categorie;
         $entree->designation = $request->designation;
-        $entree->conditionnement = $request->conditionnement;
         $entree->quantite = $request->quantite;
 
         $entree->save();
@@ -150,7 +146,7 @@ class EntreeMedicamentController extends Controller
 
         $validator = Validator::make($request->all(), [
             "medicaments" => ["array"],
-            "trierPar" => Rule::in(["DATE", "PEREMPTION", "CATEGORIE", "DESIGNATION", "CONDITIONNEMENT", "QUANTITE"]),
+            "trierPar" => Rule::in(["DATE", "PEREMPTION", "CATEGORIE", "DESIGNATION", "QUANTITE"]),
             "typeTrie" => Rule::in(["ASC", "DESC"])
         ], $messages, $attributs);
 
@@ -195,7 +191,7 @@ class EntreeMedicamentController extends Controller
 
         $validator = Validator::make($request->all(), [
             "medicaments" => ["array"],
-            "filtrerPar" => Rule::in(["DATE", "PEREMPTION", "CATEGORIE", "DESIGNATION", "CONDITIONNEMENT", "QUANTITE"]),
+            "filtrerPar" => Rule::in(["DATE", "PEREMPTION", "CATEGORIE", "DESIGNATION", "QUANTITE"]),
             "typeFiltre" => Rule::in(["DATE EGALE A", "DATE INFERIEUR A", "DATE SUPERIEUR A", "EGALE A", "COMMENCE PAR", "TERMINE PAR", "INFERIEUR A", "SUPERIEUR A"]),
             "dateSuperieurA" => ["nullable", "date"],
             "dateInferieurA" => ["nullable", "date"],

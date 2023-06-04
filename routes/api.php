@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ConfigurationPeriodeController;
 use App\Http\Controllers\EntreeMedicamentController;
 use App\Http\Controllers\SortieMedicamentController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,11 @@ Route::prefix("sorties")->group(function() {
 Route::prefix("users")->group(function() {
     Route::post("/trie", [UserController::class, "setTrie"]);
     Route::post("/filtre", [UserController::class, "setFiltre"]);
+});
+
+Route::prefix("stock")->group(function() {
+    Route::post("/getOptions", [StockController::class, "getOptions"]);
+    Route::post("/getData", [StockController::class, "getData"]);
 });
 
 Route::apiResources([
