@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->date("date")->default(date('Y-m-d'));
             $table->string("categorie");
-            $table->string("conditionnement");
             $table->string("designation");
             $table->date("peremption");
             $table->integer("quantite");
