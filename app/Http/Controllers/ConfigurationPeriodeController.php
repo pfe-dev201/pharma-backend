@@ -44,7 +44,7 @@ class ConfigurationPeriodeController extends Controller
         $configuration = Configuration::find(1);
 
         $configuration->periode_proche_perimee= $request->prochePerimee;
-        $configuration->periode_proche_perimee= $request->prochePerimee;
+        $configuration->periode_proche_terminee= $request->procheTerminee;
 
         $configuration->save();
 

@@ -41,6 +41,7 @@ Route::prefix("sorties")->group(function() {
 Route::prefix("users")->group(function() {
     Route::post("/trie", [UserController::class, "setTrie"]);
     Route::post("/filtre", [UserController::class, "setFiltre"]);
+    Route::post("/updateProfile/{user}", [UserController::class, "updateProfile"]);
 });
 
 Route::prefix("stock")->group(function() {
