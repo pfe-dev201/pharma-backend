@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -264,5 +267,57 @@ class UserController extends Controller
         }
 
         return response()->json(["status" => "success", "message" => "les utilisateurs ont bien été filtrés", "users" => $users]);
+    }
+
+    public function updateProfile(Request $request, User $user)
+    {
+        $validator = Validator::make($request->all(), [
+            "nom" => ["bail", "nullable", "string"],
+            "prenom" => ["bail", "nullable", "string"],
+            "email" => ["bail", "nullable", "email"],
+            "pass" => ["bail", "nullable", "string"],
+            "confirmPass" => ["same:pass"]
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(["status" => "error", "error" => $validator->errors()]);
+        }
+
+        if (User::where('email', $request->email)->exists() && $user->email !== $request->email) {
+            return response()->json(["status" => "error", "error" => ["email" => ["l'email choisi est déjà pris"]]]);
+        }
+
+        $request->whenFilled("imageLogo", function($input) use ($user) { 
+            $oldImgProfile = $user->image_profile;
+            $filePath = storage_path('app\\public\\' . $oldImgProfile);
+            if($oldImgProfile !== "default-profile.jpg"){
+                if (File::exists($filePath)) {
+                    File::delete($filePath);
+                }
+            }
+            $extention =  explode("/",explode(";",$input)[0])[1];
+            $image = str_replace('data:image/'.$extention.';base64,', '', $input);
+            $image = str_replace(' ', '+', $image);
+            $imgProfile = Str::random(8).'.'.$extention;
+            File::put(storage_path('app\\public\\') . $imgProfile, base64_decode($image));
+            $user->image_profile = $imgProfile;
+        });
+        $request->whenFilled("nom", function($input) use ($user) {
+            $user->nom = $input;
+        });
+        $request->whenFilled("prenom", function($input) use ($user) {
+            $user->prenom = $input;
+        });
+        $request->whenFilled("email", function($input) use ($user) {
+            $user->email = $input;
+        });
+        $request->whenFilled("pass", function($input) use ($user) {
+            $user->password = Hash::make($input);
+        });
+
+        $user->save();
+        
+        return response()->json(["status" => "success", "message" => "vos informations ont bien été modifiés", "user" => $user])
+            ->header("Access-Control-Allow-Origin", "http://localhost:3000");
     }
 }
