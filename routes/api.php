@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ConfigurationPeriodeController;
 use App\Http\Controllers\EntreeMedicamentController;
+use App\Http\Controllers\RapportController;
 use App\Http\Controllers\SortieMedicamentController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\UserController;
@@ -42,6 +43,12 @@ Route::prefix("users")->group(function() {
     Route::post("/trie", [UserController::class, "setTrie"]);
     Route::post("/filtre", [UserController::class, "setFiltre"]);
     Route::post("/updateProfile/{user}", [UserController::class, "updateProfile"]);
+});
+
+Route::prefix("rapport")->group(function() {
+    Route::get("/", [RapportController::class, "index"]);
+    Route::post("/mid", [RapportController::class, "get_mid_date"]);
+    Route::match(['get', 'post'],"/mid/{mid?}/{year?}", [RapportController::class, "get_entree_sortie"]);
 });
 
 Route::prefix("stock")->group(function() {
