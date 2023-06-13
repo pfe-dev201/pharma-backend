@@ -287,21 +287,25 @@ class UserController extends Controller
             return response()->json(["status" => "error", "error" => ["email" => ["l'email choisi est déjà pris"]]]);
         }
 
-        $request->whenFilled("imageLogo", function($input) use ($user) { 
-            $oldImgProfile = $user->image_profile;
-            $filePath = storage_path('app\\public\\' . $oldImgProfile);
-            if($oldImgProfile !== "default-profile.jpg"){
-                if (File::exists($filePath)) {
-                    File::delete($filePath);
+        $oldImgProfile = $user->image_profile;
+
+        if($oldImgProfile !== explode("/", $request->imageLogo)[4]) {
+            $request->whenFilled("imageLogo", function($input) use ($user, $oldImgProfile) { 
+                $filePath = storage_path('app\\public\\' . $oldImgProfile);
+                if($oldImgProfile !== "default-profile.jpg"){
+                    if (File::exists($filePath)) {
+                        File::delete($filePath);
+                    }
                 }
-            }
-            $extention =  explode("/",explode(";",$input)[0])[1];
-            $image = str_replace('data:image/'.$extention.';base64,', '', $input);
-            $image = str_replace(' ', '+', $image);
-            $imgProfile = Str::random(8).'.'.$extention;
-            File::put(storage_path('app\\public\\') . $imgProfile, base64_decode($image));
-            $user->image_profile = $imgProfile;
-        });
+                $extention =  explode("/",explode(";",$input)[0])[1];
+                $image = str_replace('data:image/'.$extention.';base64,', '', $input);
+                $image = str_replace(' ', '+', $image);
+                $imgProfile = Str::random(8).'.'.$extention;
+                $user->image_profile = $imgProfile;
+                File::put(storage_path('app\\public\\') . $imgProfile, base64_decode($image));
+            });
+        }
+        
         $request->whenFilled("nom", function($input) use ($user) {
             $user->nom = $input;
         });
